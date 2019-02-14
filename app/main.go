@@ -6,13 +6,16 @@ import (
 	"os"
 	"strings"
 
+	"github.com/mohamedgamaleldin/go-alpha/app/server"
 	"github.com/mongodb/mongo-go-driver/mongo"
 	"github.com/mongodb/mongo-go-driver/mongo/readpref"
 )
 
 const (
-	host       = "localhost"
-	port       = "27017"
+	serverHost = "127.0.0.1"
+	serverPort = "8080"
+	mongoHost  = "mongo"
+	mongoPort  = "27017"
 	database   = "db"
 	username   = ""
 	password   = ""
@@ -34,9 +37,10 @@ var mongoSession = MongoSession{}
 
 func main() {
 
-	logger := log.New(os.Stdout, "[app]", (log.Ldate | log.Ltime | log.Lshortfile))
-	
-	
+	logger := log.New(os.Stdout, "[app] ", (log.Ldate | log.Ltime | log.Lshortfile))
+
+	server.InitServer(logger, getServerURI())
+
 	// connect to mongo
 	// session := initMongo()
 	// mongoSession.session = session
@@ -51,7 +55,7 @@ func initServer(addr string) {
 }
 
 func initMongo() (session *mongo.Client) {
-	session, err := mongo.Connect(context.TODO(), getConnectionString())
+	session, err := mongo.Connect(context.TODO(), getMongoURI())
 
 	if err != nil {
 		log.Fatal(err)
@@ -80,15 +84,26 @@ func shutDownMongo(session *mongo.Client) {
 
 }
 
-func getConnectionString() string {
+func getMongoURI() string {
 
 	var sb strings.Builder
 
 	sb.WriteString("mongodb://")
-	sb.WriteString(host)
+	sb.WriteString(mongoHost)
 	sb.WriteString(":")
-	sb.WriteString(port)
+	sb.WriteString(mongoPort)
 
 	return sb.String()
 
+}
+
+func getServerURI() string {
+
+	var sb strings.Builder
+
+	sb.WriteString(serverHost)
+	sb.WriteString(":")
+	sb.WriteString(serverPort)
+
+	return sb.String()
 }
