@@ -12,7 +12,7 @@ import (
 )
 
 const (
-	serverHost = "127.0.0.1"
+	serverHost = ""
 	serverPort = "8080"
 	mongoHost  = "mongo"
 	mongoPort  = "27017"
@@ -48,10 +48,6 @@ func main() {
 	// close the mongo connection when application ends
 	// defer shutDownMongo(mongoSession.session)
 
-}
-
-func initServer(addr string) {
-	log.Println("server is starting.")
 }
 
 func initMongo() (session *mongo.Client) {
