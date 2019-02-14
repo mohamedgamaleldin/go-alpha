@@ -6,7 +6,7 @@ build :
 	docker build -t go-alpha .
 
 run :
-	docker run -p 8080:8080 --name go-alpha go-alpha
+	docker run --rm --name go-alpha -p 8080:8080 --network go-alpha_demo_network go-alpha
 
 test :
 	go get -d ./...

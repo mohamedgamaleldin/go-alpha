@@ -34,19 +34,27 @@ type MongoSession struct {
 }
 
 var mongoSession = MongoSession{}
+var logger *log.Logger
 
 func main() {
 
-	logger := log.New(os.Stdout, "[app] ", (log.Ldate | log.Ltime | log.Lshortfile))
-
-	server.InitServer(logger, getServerURI())
+	logger = log.New(os.Stdout, "[app] ", (log.Ldate | log.Ltime | log.Lshortfile))
 
 	// connect to mongo
-	// session := initMongo()
-	// mongoSession.session = session
+	session := initMongo()
+	mongoSession.session = session
+
+	// add document to test collection
+	_, err := session.Database(database).Collection(collection).InsertOne(context.TODO(), Item{"Alex", 30})
+
+	if err != nil {
+		logger.Fatal(err)
+	}
 
 	// close the mongo connection when application ends
-	// defer shutDownMongo(mongoSession.session)
+	defer shutDownMongo(mongoSession.session)
+
+	server.InitServer(logger, getServerURI())
 
 }
 
@@ -54,16 +62,16 @@ func initMongo() (session *mongo.Client) {
 	session, err := mongo.Connect(context.TODO(), getMongoURI())
 
 	if err != nil {
-		log.Fatal(err)
+		logger.Fatal(err)
 	}
 
 	err = session.Ping(context.TODO(), readpref.Primary())
 
 	if err != nil {
-		log.Fatal(err)
+		logger.Fatal(err)
 	}
 
-	log.Println("mongo session created successfully.")
+	logger.Println("mongo session created successfully.")
 
 	return session
 }
@@ -73,10 +81,10 @@ func shutDownMongo(session *mongo.Client) {
 	err := session.Disconnect(context.TODO())
 
 	if err != nil {
-		log.Fatal(err)
+		logger.Fatal(err)
 	}
 
-	log.Println("mongo connection closed.")
+	logger.Println("mongo connection closed.")
 
 }
 

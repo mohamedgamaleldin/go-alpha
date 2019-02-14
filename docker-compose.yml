@@ -1,14 +1,6 @@
 version: '3'
 
 services:
-  app:
-    build: ./app/
-    container_name: go-alpha
-    restart: always
-    ports:
-      - "8080:8080"
-    networks:
-      - backend
   mongo:
     image: mongo:latest
     container_name: mongo
@@ -17,7 +9,6 @@ services:
     volumes:
         - ./data:/data/db
     networks:
-      - backend
+      - demo_network
 networks:
-  backend:
-    driver: "bridge"
+    demo_network:

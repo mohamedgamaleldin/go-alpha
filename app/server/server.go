@@ -17,7 +17,7 @@ type Server struct {
 // InitServer .. Initializes the server
 func InitServer(logger *log.Logger, addr string) {
 	// logger stuff
-	logger.Println("Server is starting")
+	logger.Println("server is starting")
 
 	// router stuff with wrapper handler functions for the middleware
 	router := MountRoutes(logger)
@@ -38,7 +38,7 @@ func InitServer(logger *log.Logger, addr string) {
 
 	go func() {
 		<-quit
-		logger.Println("Server is shutting down")
+		logger.Println("server is shutting down")
 
 		ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
 		defer cancel()
@@ -46,22 +46,22 @@ func InitServer(logger *log.Logger, addr string) {
 		server.SetKeepAlivesEnabled(false)
 
 		if err := server.Shutdown(ctx); err != nil {
-			logger.Fatalf("Could not gracefully shutdown: %v\n", err)
+			logger.Fatalf("could not gracefully shutdown: %v\n", err)
 		}
 
 		close(done)
 	}()
 
-	logger.Println("Server handling requests on ", server.Addr)
+	logger.Println("server handling requests on ", server.Addr)
 	server.StartServer(logger)
 
 	<-done
-	logger.Println("Server stopped")
+	logger.Println("server stopped")
 }
 
 // StartServer uses the embedded server type and starts it - ignoring server closed errors as they are handled gracefully
 func (server *Server) StartServer(logger *log.Logger) {
 	if err := server.ListenAndServe(); err != nil && err != http.ErrServerClosed {
-		logger.Fatalf("Could not listen on %s: %v", server.Addr, err)
+		logger.Fatalf("could not listen on %s: %v", server.Addr, err)
 	}
 }
