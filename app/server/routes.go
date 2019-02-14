@@ -4,8 +4,8 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/mohamedgamaleldin/go-alpha/handlers"
-	"github.com/mohamedgamaleldin/go-alpha/middleware"
+	"github.com/mohamedgamaleldin/go-alpha/app/handlers"
+	"github.com/mohamedgamaleldin/go-alpha/app/middleware"
 )
 
 // Route route definition
