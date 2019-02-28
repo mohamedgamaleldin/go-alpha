@@ -36,6 +36,7 @@ func (l *Logger) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	mrw := NewModifiedResponseWriter(w)
 	l.handler.ServeHTTP(mrw, r)
+
 	l.logger.Printf("%v | %v | %s | %s | %s\n", time.Since(start), mrw.statusCode, r.RequestURI, r.RemoteAddr, r.Method)
 }
 

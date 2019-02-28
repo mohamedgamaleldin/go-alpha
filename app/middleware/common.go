@@ -5,8 +5,8 @@ import (
 	"strings"
 )
 
-// MustParams .. validates that the required parameters for an endpoint are in the request
-func MustParams(params ...string) Adapter {
+// MustParamsGET .. validates that the required parameters for an endpoint are in the request
+func MustParamsGET(params ...string) Adapter {
 	return func(h http.Handler) http.Handler {
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 
@@ -45,7 +45,7 @@ func MustAuth() Adapter {
 	return func(h http.Handler) http.Handler {
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 
-			w.Write([]byte("MustAuth() called"))
+			
 			h.ServeHTTP(w, r)
 		})
 	}

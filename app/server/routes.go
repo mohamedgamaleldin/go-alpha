@@ -29,9 +29,11 @@ func BuildRoutes() *RoutesList {
 	}
 
 	getTokenRoute := Route{
-		path:       "/get-token",
-		middleware: []middleware.Adapter{},
-		handler:    handlers.GetTokenHandler,
+		path: "/get-token",
+		middleware: []middleware.Adapter{
+			middleware.MustAuth(),
+		},
+		handler: handlers.GetTokenHandler,
 	}
 
 	routesList := &RoutesList{indexRoute, getTokenRoute}
