@@ -8,6 +8,7 @@ import (
 func IndexHandler() http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusAccepted)
-		w.Write([]byte("index called."))
+		w.Write([]byte("/ called."))
+
 	})
 }

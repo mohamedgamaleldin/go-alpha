@@ -39,3 +39,14 @@ func MustParams(params ...string) Adapter {
 		})
 	}
 }
+
+// MustAuth .. checks if auth token is present and valid
+func MustAuth() Adapter {
+	return func(h http.Handler) http.Handler {
+		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+
+			w.Write([]byte("MustAuth() called"))
+			h.ServeHTTP(w, r)
+		})
+	}
+}

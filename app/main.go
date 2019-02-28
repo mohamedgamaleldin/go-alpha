@@ -7,8 +7,9 @@ import (
 	"strings"
 
 	"github.com/mohamedgamaleldin/go-alpha/app/server"
-	"github.com/mongodb/mongo-go-driver/mongo"
-	"github.com/mongodb/mongo-go-driver/mongo/readpref"
+	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
+	"go.mongodb.org/mongo-driver/mongo/readpref"
 )
 
 const (
@@ -40,26 +41,26 @@ func main() {
 
 	logger = log.New(os.Stdout, "[app] ", (log.Ldate | log.Ltime | log.Lshortfile))
 
-	// connect to mongo
-	session := initMongo()
-	mongoSession.session = session
+	/* 	// connect to mongo
+	   	session := initMongo()
+	   	mongoSession.session = session
 
-	// add document to test collection
-	_, err := session.Database(database).Collection(collection).InsertOne(context.TODO(), Item{"Alex", 30})
+	   	// add document to test collection
+	   	_, err := session.Database(database).Collection(collection).InsertOne(context.TODO(), Item{"Alex", 30})
 
-	if err != nil {
-		logger.Fatal(err)
-	}
+	   	if err != nil {
+	   		logger.Fatal(err)
+	   	}
 
-	// close the mongo connection when application ends
-	defer shutDownMongo(mongoSession.session)
+	   	// close the mongo connection when application ends
+	   	defer shutDownMongo(mongoSession.session) */
 
 	server.InitServer(logger, getServerURI())
 
 }
 
 func initMongo() (session *mongo.Client) {
-	session, err := mongo.Connect(context.TODO(), getMongoURI())
+	session, err := mongo.Connect(context.TODO(), options.Client().ApplyURI(getMongoURI()))
 
 	if err != nil {
 		logger.Fatal(err)
