@@ -17,7 +17,7 @@ var (
 	signKey *rsa.PrivateKey
 )
 
-func init() {
+func init() {   
 
 	signBytes, err := ioutil.ReadFile(privateKeyPath)
 
